@@ -4,27 +4,43 @@ const buttonHigh = document.getElementById('high-bet');
 const buttonLow = document.getElementById('low-bet');
 const result = document.getElementById('result');
 const output = document.getElementById('number-output');
-let random = Math.random();
+let money = 1000;
 
-buttonHigh.addEventListener('click', () => {
+function showWin() {
+    result.textContent = 'You Win!';
+};
+function showLoss() {
+    result.textContent = 'You did not win!';
+};
+function updateMoney(bet) {
+    money = money + bet;
+    userMoney.textContent = Number(userMoney.textContent) + Number(betAmount.value);
+};
+
+function applyResult(isWin) {
+    const bet = Number(betAmount.value);
+    if (isWin) {
+        showWin();
+        updateMoney(bet);
+    } else {
+        showLoss();
+        updateMoney(-1 * bet);
+    }
+};
+function generateRandom() {
     let random = Math.random();
     output.textContent = random;
-    if (random > .5) {
-        result.textContent = 'You Win!'
-        userMoney.textContent = Number(userMoney.textContent) + Number(betAmount.value);
-    } else {
-        result.textContent = 'You Lose!'
-        userMoney.textContent = Number(userMoney.textContent) - Number(betAmount.value);
-    }
+    return random;
+};
+
+buttonHigh.addEventListener('click', () => {
+    let random = generateRandom();
+    applyResult(random >= .5);
 });
 
 buttonLow.addEventListener('click', () => {
-    let random = Math.random();
-    if (random < .5) {
-        result.textContent = 'You Win!'
-        userMoney.textContent = Number(userMoney.textContent) + Number(betAmount.value);
-    } else {
-        result.textContent = 'You Lose!'
-        userMoney.textContent = Number(userMoney.textContent) - Number(betAmount.value);
-    }
+    let random = generateRandom();
+    applyResult(random < .5);
 });
+
+
